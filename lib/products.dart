@@ -22,8 +22,10 @@ class Products extends StatelessWidget {
                                 onPressed: () {
                                     Navigator.push<Map<String, bool>>(context, MaterialPageRoute(
                                         builder: (BuildContext context) => ProductPage(products[index]),
-                                    )).then((Map<String, bool> value) {
-                                        deleteProduct(index);
+                                    )).then((Map<String, bool> result) {
+                                        if (result['value'] == true) {
+                                            deleteProduct(index);
+                                        }
                                     });
                                 },
                             )

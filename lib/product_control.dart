@@ -3,9 +3,8 @@ import './entity/Product.dart';
 
 class ProductControl extends StatelessWidget {
     final Function addProduct;
-    final Function deleteProduct;
 
-    ProductControl(this.addProduct, this.deleteProduct);
+    ProductControl(this.addProduct);
 
     @override
     Widget build(BuildContext context) {
@@ -18,13 +17,6 @@ class ProductControl extends StatelessWidget {
                         addProduct(newProduct);
                     },
                     child: Text('Add Product'),
-                ),
-                RaisedButton(
-                    color: Theme.of(context).accentColor,
-                    onPressed: () {
-                        deleteProduct();
-                    },
-                    child: Text('Delete Product'),
                 ),
             ],
         );

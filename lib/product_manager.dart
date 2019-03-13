@@ -36,10 +36,10 @@ class _ProductManagerState extends State<ProductManager> {
         });
     }
 
-    void _deleteProduct() {
+    void _deleteProduct(int index) {
         if (_products.length > 0) {
             setState(() {
-                _products.removeLast();
+                _products.removeAt(index);
             });
         }
     }
@@ -50,10 +50,10 @@ class _ProductManagerState extends State<ProductManager> {
             children: <Widget>[
                 Container(
                     margin: EdgeInsets.all(10.0),
-                    child: ProductControl(_updateProduct, _deleteProduct),
+                    child: ProductControl(_updateProduct),
                 ),
                 Expanded(
-                    child: Products(_products),
+                    child: Products(_products, deleteProduct: _deleteProduct),
                 )
             ],
         );

@@ -4,4 +4,11 @@ container(
     margin: EdgeInsets.all(10.0),
     child: Widget
 )
-29
+
+access statefull widget
+void initState() {
+    widge.startingProduct
+    super.initState();
+}
+
+57

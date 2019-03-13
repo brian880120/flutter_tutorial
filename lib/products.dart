@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import './pages/product/product_page.dart';
+import './entity/Product.dart';
 
 class Products extends StatelessWidget {
-    final List<String> products;
+    final List<Product> products;
 
     Products(this.products);
 
@@ -9,8 +11,21 @@ class Products extends StatelessWidget {
         return Card(
             child: Column(
                 children: <Widget>[
-                    Image.asset('assets/demo.jpg'),
-                    Text(products[index])
+                    Image.asset(products[index].image),
+                    Text(products[index].name),
+                    ButtonBar(
+                        alignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                            FlatButton(
+                                child: Text('Details'),
+                                onPressed: () {
+                                    Navigator.push(context, MaterialPageRoute(
+                                        builder: (BuildContext context) => ProductPage(),
+                                    ));
+                                },
+                            )
+                        ],
+                    )
                 ],
             ),
         );

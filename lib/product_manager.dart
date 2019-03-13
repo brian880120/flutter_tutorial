@@ -37,9 +37,11 @@ class _ProductManagerState extends State<ProductManager> {
     }
 
     void _deleteProduct() {
-        setState(() {
-            _products.removeLast();
-        });
+        if (_products.length > 0) {
+            setState(() {
+                _products.removeLast();
+            });
+        }
     }
 
     @override

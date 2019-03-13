@@ -1,4 +1,7 @@
 if column, children: <Widget>[]
 if Widget, child
-
+container(
+    margin: EdgeInsets.all(10.0),
+    child: Widget
+)
 29

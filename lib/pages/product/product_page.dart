@@ -1,11 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import '../../entity/Product.dart';
 
 class ProductPage extends StatelessWidget {
     final Product product;
-    final Map<String, bool> result = {
-        'value': false,
-    };
 
     ProductPage(this.product);
 
@@ -14,8 +12,8 @@ class ProductPage extends StatelessWidget {
         return WillPopScope(
             onWillPop: () {
                 print('Back button pressed');
-                Navigator.pop(context, {'value': true});
-                return Future.value(true);
+                Navigator.pop(context, false);
+                return Future.value(false);
             },
             child: Scaffold(
                 appBar: AppBar(
@@ -38,9 +36,9 @@ class ProductPage extends StatelessWidget {
                             ),
                             Image.asset(product.image),
                             RaisedButton(
-                                child: Text('Back'),
+                                child: Text('Delete'),
                                 color: Theme.of(context).accentColor,
-                                onPressed: () => Navigator.pop(context, {'value': false}),
+                                onPressed: () => Navigator.pop(context, true),
                             ),
                         ],
                     )

@@ -11,7 +11,45 @@ class Products extends StatelessWidget {
             child: Column(
                 children: <Widget>[
                     Image.asset(products[index].image),
-                    Text(products[index].name),
+                    Container(
+                        padding: EdgeInsets.only(top: 10.0),
+                        child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: <Widget>[
+                                Text(
+                                    products[index].name,
+                                    style: TextStyle(
+                                        fontSize: 20.0,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Oswald'
+                                    ),
+                                ),
+                                SizedBox(width: 8.0),
+                                Container(
+                                    padding:EdgeInsets.symmetric(horizontal: 10.0),
+                                    decoration: BoxDecoration(
+                                        color: Theme.of(context).accentColor,
+                                        borderRadius: BorderRadius.circular(5.0)
+                                    ),
+                                    child: Text(
+                                        '\$${products[index].price.toString()}',
+                                        style: TextStyle(
+                                            color: Colors.white,
+                                        ),
+                                    ),
+                                ),
+                            ],
+                        ),
+                    ),
+                    DecoratedBox(
+                        child: Text('Union Square, San Francisco'),
+                        decoration: BoxDecoration(
+                            border: Border.all(
+                                color: Colors.grey,
+                                width: 1.0,
+                            ),
+                        ),
+                    ),
                     ButtonBar(
                         alignment: MainAxisAlignment.center,
                         children: <Widget>[

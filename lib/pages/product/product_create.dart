@@ -13,9 +13,9 @@ class ProductCreatePage extends StatefulWidget {
 }
 
 class _ProductCreatePageState extends State<ProductCreatePage> {
-    String titleValue = '';
-    String description = '';
-    double price = 0.0;
+    String _titleValue = '';
+    String _description = '';
+    double _price = 0.0;
 
     @override
     Widget build(BuildContext context) {
@@ -29,7 +29,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                         ),
                         onChanged: (String value) {
                             setState(() {
-                                titleValue = value;
+                                _titleValue = value;
                             });
                         },
                     ),
@@ -40,7 +40,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                         maxLines: 4,
                         onChanged: (String value) {
                             setState(() {
-                                description = value;
+                                _description = value;
                             });
                         },
                     ),
@@ -51,15 +51,21 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                         keyboardType: TextInputType.number,
                         onChanged: (String value) {
                             setState(() {
-                                price = double.parse(value);
+                                _price = double.parse(value);
                             });
                         },
                     ),
+                    SizedBox(
+                        height: 10.0,
+                    ),
                     RaisedButton(
+                        color: Theme.of(context).accentColor,
+                        textColor: Colors.white,
                         child: Text('Save'),
                         onPressed: () {
-                            Product newProduct = new Product(titleValue, description, price, 'assets/demo.jpg');
+                            Product newProduct = new Product(_titleValue, _description, _price, 'assets/demo.jpg');
                             widget.addProduct(newProduct);
+                            Navigator.pushReplacementNamed(context, '/products');
                         },
                     ),
                 ],

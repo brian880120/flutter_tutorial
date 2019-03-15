@@ -18,6 +18,12 @@ class ProductsPage extends StatelessWidget {
                             title: Text('Choose'),
                         ),
                         ListTile(
+                            title: Text('Logout'),
+                            onTap: () {
+                                Navigator.pushReplacementNamed(context, '/');
+                            },
+                        ),
+                        ListTile(
                             title: Text('Manager Products'),
                             onTap: () {
                                 Navigator.pushReplacementNamed(context, '/admin');

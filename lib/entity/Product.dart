@@ -2,6 +2,7 @@ class Product {
     String name;
     String image;
     String detail;
+    double price;
 
-    Product(this.name, this.image, [this.detail]);
+    Product(this.name, this.detail, this.price, [this.image]);
 }

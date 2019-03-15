@@ -16,7 +16,7 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
     final List<Product> _products = [];
 
-    void _updateProduct(Product product) {
+    void _addProduct(Product product) {
         setState(() {
             _products.add(product);
         });
@@ -40,8 +40,8 @@ class _MyAppState extends State<MyApp> {
             ),
             //home: AuthPage(),
             routes: {
-                '/': (BuildContext context) => ProductsPage(_products, _updateProduct, _deleteProduct),
-                '/admin': (BuildContext context) => ProductsAdminPage(),
+                '/': (BuildContext context) => ProductsPage(_products),
+                '/admin': (BuildContext context) => ProductsAdminPage(_addProduct, _deleteProduct),
             },
             onGenerateRoute: (RouteSettings settings) {
                 final List<String> pathElements = settings.name.split('/');
@@ -57,7 +57,7 @@ class _MyAppState extends State<MyApp> {
             },
             onUnknownRoute: (RouteSettings settings) {
                 return MaterialPageRoute(
-                    builder: (BuildContext context) => ProductsPage(_products, _updateProduct, _deleteProduct),
+                    builder: (BuildContext context) => ProductsPage(_products),
                 );
             },
         );

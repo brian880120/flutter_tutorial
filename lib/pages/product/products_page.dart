@@ -4,10 +4,8 @@ import '../../entity/Product.dart';
 
 class ProductsPage extends StatelessWidget {
     final List<Product> products;
-    final Function updateProduct;
-    final Function deleteProduct;
 
-    ProductsPage(this.products, this.updateProduct, this.deleteProduct);
+    ProductsPage(this.products);
 
     @override
     Widget build(BuildContext context) {
@@ -29,9 +27,9 @@ class ProductsPage extends StatelessWidget {
                 ),
             ),
             appBar: AppBar(
-                title: Text('EasyListTest'),
+                title: Text('Home Page'),
             ),
-            body: ProductManager(products, updateProduct, deleteProduct),
+            body: ProductManager(products),
         );
     }
 }

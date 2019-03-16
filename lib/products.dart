@@ -16,25 +16,30 @@ class Products extends StatelessWidget {
                         child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                                Text(
-                                    products[index].name,
-                                    style: TextStyle(
-                                        fontSize: 20.0,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: 'Oswald'
+                                Flexible(
+                                    flex: 2,
+                                    child: Text(
+                                        products[index].name,
+                                        style: TextStyle(
+                                            fontSize: 20.0,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Oswald'
+                                        ),
                                     ),
                                 ),
                                 SizedBox(width: 8.0),
-                                Container(
-                                    padding:EdgeInsets.symmetric(horizontal: 10.0),
-                                    decoration: BoxDecoration(
-                                        color: Theme.of(context).accentColor,
-                                        borderRadius: BorderRadius.circular(5.0)
-                                    ),
-                                    child: Text(
-                                        '\$${products[index].price.toString()}',
-                                        style: TextStyle(
-                                            color: Colors.white,
+                                Expanded(
+                                    child: Container(
+                                        padding:EdgeInsets.symmetric(horizontal: 10.0),
+                                        decoration: BoxDecoration(
+                                            color: Theme.of(context).accentColor,
+                                            borderRadius: BorderRadius.circular(5.0)
+                                        ),
+                                        child: Text(
+                                            '\$${products[index].price.toString()}',
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                            ),
                                         ),
                                     ),
                                 ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../entity/Product.dart';
+import '../../widgets/products/product_title.dart';
 
 class ProductPage extends StatelessWidget {
     final Product product;
@@ -19,13 +20,7 @@ class ProductPage extends StatelessWidget {
                         Container(
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
-                            child: Text(
-                                product.name,
-                                style: TextStyle(
-                                    fontSize: 25.0,
-                                    fontWeight: FontWeight.w500,
-                                ),
-                            ),
+                            child: ProductTitle(product.name, 25.0, FontWeight.w500),
                         ),
                         Image.asset(product.image),
                     ],

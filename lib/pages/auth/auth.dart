@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../entity/UserCred.dart';
+import './auth_input.dart';
 
 class AuthPage extends StatefulWidget {
     @override
@@ -11,6 +12,46 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
     final UserCred userCred = new UserCred('', '', false);
 
+    _buildBackgroundImage() {
+        return DecorationImage(
+            fit: BoxFit.cover,
+            colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
+            image: AssetImage('assets/demo.jpg'),
+        );
+    }
+
+    Widget _buildEmailTextField() {
+        return AuthInput(
+            inputValue: userCred.email,
+            label: 'E-Mail',
+            inputType: TextInputType.emailAddress,
+            onInputChanged: (String value) {
+                userCred.email = value;
+            },  
+        );
+    }
+
+    Widget _buildPasswordTextField() {
+        return AuthInput(
+            inputValue: userCred.password,
+            label: 'Password',
+            isObscureText: true,
+            onInputChanged: (String value) {
+                userCred.password = value;
+            },
+        );
+    }
+
+    Widget _buildAcceptSwitch() {
+        return SwitchListTile(
+            value: userCred.acceptTerms,
+            title: Text('Accept Terms'),
+            onChanged: (bool value) {
+                userCred.acceptTerms = value;
+            },
+        );
+    }
+
     @override
     Widget build(BuildContext context) {
         return Scaffold(
@@ -19,53 +60,17 @@ class _AuthPageState extends State<AuthPage> {
             ),
             body: Container(
                 decoration: BoxDecoration(
-                    image: DecorationImage(
-                        fit: BoxFit.cover,
-                        colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.5), BlendMode.dstATop),
-                        image: AssetImage('assets/demo.jpg'),
-                    )
+                    image: _buildBackgroundImage(),
                 ),
                 padding: EdgeInsets.all(10.0),
                 child: Center(
                     child: SingleChildScrollView(
                         child: Column(
                             children: <Widget>[
-                                TextField(
-                                    controller: TextEditingController(
-                                        text: userCred.email
-                                    ),
-                                    decoration: InputDecoration(
-                                        labelText: 'E-Mail',
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                    ),
-                                    keyboardType: TextInputType.emailAddress,
-                                    onChanged: (String value) {
-                                        userCred.email = value;
-                                    },
-                                ),
+                                _buildEmailTextField(),
                                 SizedBox(height: 10.0),
-                                TextField(
-                                    controller: TextEditingController(
-                                        text: userCred.password
-                                    ),
-                                    decoration: InputDecoration(
-                                        labelText: 'Password',
-                                        filled: true,
-                                        fillColor: Colors.white,
-                                    ),
-                                    obscureText: true,
-                                    onChanged: (String value) {
-                                        userCred.password = value;
-                                    },
-                                ),
-                                SwitchListTile(
-                                    value: userCred.acceptTerms,
-                                    title: Text('Accept Terms'),
-                                    onChanged: (bool value) {
-                                        userCred.acceptTerms = value;
-                                    },
-                                ),
+                                _buildPasswordTextField(),
+                                _buildAcceptSwitch(),
                                 SizedBox(
                                     height: 10.0,
                                 ),

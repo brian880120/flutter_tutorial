@@ -17,44 +17,62 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
     String _description = '';
     double _price = 0.0;
 
+    Widget _buildTitleTextField() {
+        return TextField(
+            decoration: InputDecoration(
+                labelText: 'Product Title',
+            ),
+            onChanged: (String value) {
+                setState(() {
+                    _titleValue = value;
+                });
+            },
+        );
+    }
+
+    Widget _buildDescriptionTextField() {
+        return TextField(
+            decoration: InputDecoration(
+                labelText: 'Product Description',
+            ),
+            maxLines: 4,
+            onChanged: (String value) {
+                setState(() {
+                    _description = value;
+                });
+            },
+        );        
+    }
+
+    Widget _buildPriceTextField() {
+        return TextField(
+            decoration: InputDecoration(
+                labelText: 'Product Price',
+            ),
+            keyboardType: TextInputType.number,
+            onChanged: (String value) {
+                setState(() {
+                    _price = double.parse(value);
+                });
+            },
+        );
+    }
+
+    void _submitForm() {
+        Product newProduct = new Product(_titleValue, _description, _price, 'assets/demo.jpg');
+        widget.addProduct(newProduct);
+        Navigator.pushReplacementNamed(context, '/products');
+    }
+
     @override
     Widget build(BuildContext context) {
         return Container(
             margin: EdgeInsets.all(10.0),
             child: ListView(
                 children: <Widget>[
-                    TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Product Title',
-                        ),
-                        onChanged: (String value) {
-                            setState(() {
-                                _titleValue = value;
-                            });
-                        },
-                    ),
-                    TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Product Description',
-                        ),
-                        maxLines: 4,
-                        onChanged: (String value) {
-                            setState(() {
-                                _description = value;
-                            });
-                        },
-                    ),
-                    TextField(
-                        decoration: InputDecoration(
-                            labelText: 'Product Price',
-                        ),
-                        keyboardType: TextInputType.number,
-                        onChanged: (String value) {
-                            setState(() {
-                                _price = double.parse(value);
-                            });
-                        },
-                    ),
+                    _buildTitleTextField(),
+                    _buildDescriptionTextField(),
+                    _buildPriceTextField(),
                     SizedBox(
                         height: 10.0,
                     ),
@@ -62,11 +80,7 @@ class _ProductCreatePageState extends State<ProductCreatePage> {
                         color: Theme.of(context).accentColor,
                         textColor: Colors.white,
                         child: Text('Save'),
-                        onPressed: () {
-                            Product newProduct = new Product(_titleValue, _description, _price, 'assets/demo.jpg');
-                            widget.addProduct(newProduct);
-                            Navigator.pushReplacementNamed(context, '/products');
-                        },
+                        onPressed: _submitForm,
                     ),
                 ],
             ),

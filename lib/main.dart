@@ -42,7 +42,7 @@ class _MyAppState extends State<MyApp> {
             ),
             routes: {
                 '/': (BuildContext context) => AuthPage(),
-                '/products': (BuildContext context) => ProductsPage(_products),
+                '/products': (BuildContext context) => ProductsPage(_products, _deleteProduct),
                 '/admin': (BuildContext context) => ProductsAdminPage(_addProduct, _deleteProduct),
             },
             onGenerateRoute: (RouteSettings settings) {
@@ -59,7 +59,7 @@ class _MyAppState extends State<MyApp> {
             },
             onUnknownRoute: (RouteSettings settings) {
                 return MaterialPageRoute(
-                    builder: (BuildContext context) => ProductsPage(_products),
+                    builder: (BuildContext context) => ProductsPage(_products, _deleteProduct),
                 );
             },
         );

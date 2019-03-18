@@ -5,6 +5,7 @@ class AuthInput extends StatelessWidget {
     final String label;
     final TextInputType inputType;
     final bool isObscureText;
+    final Function validator;
     final Function onInputChanged;
 
     AuthInput({
@@ -12,12 +13,13 @@ class AuthInput extends StatelessWidget {
         this.label,
         this.inputType = TextInputType.text,
         this.isObscureText = false,
+        this.validator,
         this.onInputChanged,
     });
 
     @override
     Widget build(BuildContext context) {
-        return TextField(
+        return TextFormField(
             controller: TextEditingController(
                 text: inputValue,
             ),
@@ -28,7 +30,8 @@ class AuthInput extends StatelessWidget {
             ),
             keyboardType: inputType,
             obscureText: isObscureText,
-            onChanged: onInputChanged,
+            validator: validator,
+            onSaved: onInputChanged,
         );
     }
 }

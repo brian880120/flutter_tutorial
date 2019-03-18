@@ -7,8 +7,9 @@ import './address_tag.dart';
 class ProductCard extends StatelessWidget {
     final Product product;
     final int index;
+    final Function deleteProduct;
 
-    ProductCard(this.product, this.index);
+    ProductCard(this.product, this.index, this.deleteProduct);
 
     Widget _buildTitlePriceRow() {
         return Container(
@@ -39,6 +40,13 @@ class ProductCard extends StatelessWidget {
                     color: Colors.red,
                     icon: Icon(Icons.favorite_border),
                     onPressed: () {
+                    },
+                ),
+                IconButton(
+                    color: Colors.black,
+                    icon: Icon(Icons.cancel),
+                    onPressed: () {
+                        deleteProduct(index);
                     },
                 ),
             ],

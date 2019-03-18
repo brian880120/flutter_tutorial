@@ -4,8 +4,8 @@ import '../../widgets/products/product_card.dart';
 
 class Products extends StatelessWidget {
     final List<Product> products;
-
-    Products(this.products);
+    final Function deleteProduct;
+    Products(this.products, this.deleteProduct);
 
     Widget _buildProductList() {
         Widget productCards = Center(
@@ -15,7 +15,7 @@ class Products extends StatelessWidget {
         if (products.length > 0) {
             productCards = ListView.builder(
                 itemBuilder: (BuildContext context, int index) {
-                    return ProductCard(products[index], index);
+                    return ProductCard(products[index], index, deleteProduct);
                 },
                 itemCount: products.length,
             );

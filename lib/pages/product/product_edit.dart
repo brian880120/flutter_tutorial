@@ -17,7 +17,13 @@ class ProductEditPage extends StatefulWidget {
 }
 
 class _ProductEditPageState extends State<ProductEditPage> {
-    Product newProduct = new Product('', '', null, 'assets/demo.jpg');
+    Product newProduct = new Product(
+        title: '',
+        description: '',
+        price: null,
+        image: 'assets/demo.jpg',
+    );
+
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final _titleFocusNode = FocusNode();
     final _descriptionFocusNode = FocusNode();
@@ -31,14 +37,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 decoration: InputDecoration(
                     labelText: 'Product Title',
                 ),
-                initialValue: widget.product == null ? null : widget.product.name,
+                initialValue: widget.product == null ? null : widget.product.title,
                 validator: (String value) {
                     if (value.isEmpty) {
                         return 'Title is required';
                     }
                 },
                 onSaved: (String value) {
-                    newProduct.name = value;
+                    newProduct.title = value;
                 },
             ),
         );
@@ -53,14 +59,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
                     labelText: 'Product Description',
                 ),
                 maxLines: 4,
-                initialValue: widget.product == null ? null : widget.product.detail,
+                initialValue: widget.product == null ? null : widget.product.description,
                 validator: (String value) {
                     if (value.isEmpty) {
                         return 'Title is required';
                     }
                 },
                 onSaved: (String value) {
-                    newProduct.detail = value;
+                    newProduct.description = value;
                 },
             ),
         );

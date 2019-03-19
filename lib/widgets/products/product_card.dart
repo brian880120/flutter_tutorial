@@ -16,7 +16,7 @@ class ProductCard extends StatelessWidget {
             child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
-                    ProductTitle(product.name, 20.0, FontWeight.bold),
+                    ProductTitle(product.title, 20.0, FontWeight.bold),
                     SizedBox(width: 8.0),
                     PriceTag(product.price.toString()),
                 ],

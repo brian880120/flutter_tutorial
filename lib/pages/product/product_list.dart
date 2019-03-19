@@ -29,7 +29,7 @@ class ProductListPage extends StatelessWidget {
         return ListView.builder(
             itemBuilder: (BuildContext context, int index) {
                 return Dismissible(
-                    key: Key(products[index].name),
+                    key: Key(products[index].title),
                     onDismissed: (DismissDirection direction) {
                         if (direction == DismissDirection.startToEnd || direction == DismissDirection.endToStart) {
                             deleteProduct(index);
@@ -44,7 +44,7 @@ class ProductListPage extends StatelessWidget {
                                 leading: CircleAvatar(
                                     backgroundImage: AssetImage(products[index].image),
                                 ),
-                                title: Text(products[index].name),
+                                title: Text(products[index].title),
                                 subtitle: Text('\$${products[index].price.toString()}'),
                                 trailing: _buildEditButton(context, index)
                             ),

@@ -20,7 +20,7 @@ class ProductPage extends StatelessWidget {
                         Container(
                             alignment: Alignment.centerLeft,
                             padding: EdgeInsets.only(bottom: 10.0, top: 10.0),
-                            child: ProductTitle(product.name, 25.0, FontWeight.w500),
+                            child: ProductTitle(product.title, 25.0, FontWeight.w500),
                         ),
                         Image.asset(product.image),
                     ],

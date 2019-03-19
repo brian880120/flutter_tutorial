@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:scoped_model/scoped_model.dart';
 import '../../entity/Product.dart';
 import '../../widgets/helpers/ensure_visible.dart';
+import '../../scoped-models/products.dart';
 
 class ProductEditPage extends StatefulWidget {
     final Function addProduct;
@@ -94,16 +96,29 @@ class _ProductEditPageState extends State<ProductEditPage> {
         );
     }
 
-    void _submitForm() {
+    void _submitForm(Function addProduct, Function updateProduct) {
         if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
             if (widget.product != null) {
-                widget.updateProduct(widget.index, newProduct);
+                updateProduct(widget.index, newProduct);
             } else {
-                widget.addProduct(newProduct);
+                addProduct(newProduct);
             }
             Navigator.pushReplacementNamed(context, '/products');
         }
+    }
+
+    Widget _buildSubmitButton() {
+        return ScopedModelDescendant<ProductsModel>(
+            builder: (BuildContext context, Widget child, ProductsModel model) {
+                return RaisedButton(
+                    color: Theme.of(context).accentColor,
+                    textColor: Colors.white,
+                    child: Text('Save'),
+                    onPressed: () => _submitForm(model.addProduct, model.updateProduct),
+                );
+            }
+        );
     }
 
     @override
@@ -127,12 +142,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                             SizedBox(
                                 height: 10.0,
                             ),
-                            RaisedButton(
-                                color: Theme.of(context).accentColor,
-                                textColor: Colors.white,
-                                child: Text('Save'),
-                                onPressed: _submitForm,
-                            ),
+                            _buildSubmitButton(),
                         ],
                     ),
                 ),

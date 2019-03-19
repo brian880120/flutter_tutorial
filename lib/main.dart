@@ -23,6 +23,12 @@ class _MyAppState extends State<MyApp> {
         });
     }
 
+    void _updateProduct(int index, Product targetProduct) {
+        setState(() {
+            _products[index] = targetProduct;
+        });
+    }
+
     void _deleteProduct(int index) {
         if (_products.length > 0) {
             setState(() {
@@ -42,8 +48,8 @@ class _MyAppState extends State<MyApp> {
             ),
             routes: {
                 '/': (BuildContext context) => AuthPage(),
-                '/products': (BuildContext context) => ProductsPage(_products, _deleteProduct),
-                '/admin': (BuildContext context) => ProductsAdminPage(_addProduct, _deleteProduct),
+                '/products': (BuildContext context) => ProductsPage(_products),
+                '/admin': (BuildContext context) => ProductsAdminPage(_addProduct, _deleteProduct, _updateProduct, _products),
             },
             onGenerateRoute: (RouteSettings settings) {
                 final List<String> pathElements = settings.name.split('/');
@@ -59,7 +65,7 @@ class _MyAppState extends State<MyApp> {
             },
             onUnknownRoute: (RouteSettings settings) {
                 return MaterialPageRoute(
-                    builder: (BuildContext context) => ProductsPage(_products, _deleteProduct),
+                    builder: (BuildContext context) => ProductsPage(_products),
                 );
             },
         );

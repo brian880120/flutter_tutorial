@@ -1,48 +1,62 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
-import 'package:image_picker/image_picker.dart';
+import '../../entity/Product.dart';
+import './product_edit.dart';
 
-class ProductListPage extends StatefulWidget {
-    @override
-    State<StatefulWidget> createState() {
-        return _ProductListPageState();
-    }
-}
+class ProductListPage extends StatelessWidget {
+    final List<Product> products;
+    final Function updateProduct;
+    final Function deleteProduct;
 
-class _ProductListPageState extends State<ProductListPage> {
-    File _image;
+    ProductListPage(this.products, this.updateProduct, this.deleteProduct);
 
-    Future getImage(bool isCamera) async {
-        File image;
-        if (isCamera) {
-            image = await ImagePicker.pickImage(source: ImageSource.camera);
-        } else {
-            image = await ImagePicker.pickImage(source:ImageSource.gallery);
-        }
-        setState(() {
-            _image = image;
-        });
+    Widget _buildEditButton(BuildContext context, int index) {
+        return IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () {
+                Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (BuildContext context) {
+                            return ProductEditPage(product: products[index], updateProduct: updateProduct, index: index);
+                        }
+                    )
+                );
+            }
+        );
     }
 
     @override
     Widget build(BuildContext context) {
-        return Column(
-            children: <Widget>[
-                IconButton(
-                    icon:Icon(Icons.insert_drive_file),
-                    onPressed: () {
-                        getImage(false);
+        return ListView.builder(
+            itemBuilder: (BuildContext context, int index) {
+                return Dismissible(
+                    key: Key(products[index].name),
+                    onDismissed: (DismissDirection direction) {
+                        if (direction == DismissDirection.startToEnd || direction == DismissDirection.endToStart) {
+                            deleteProduct(index);
+                        }
                     },
-                ),
-                SizedBox(height: 10.0),
-                IconButton(
-                    icon:Icon(Icons.camera_alt),
-                    onPressed: () {
-                        getImage(true);
-                    },
-                ),
-                _image == null ? Container() : Image.file(_image, height: 300.0, width: 300.0),
-            ],
+                    background: Container(
+                        color: Colors.red,
+                    ),
+                    child: Column(
+                        children: <Widget>[
+                            ListTile(
+                                leading: CircleAvatar(
+                                    backgroundImage: AssetImage(products[index].image),
+                                ),
+                                title: Text(products[index].name),
+                                subtitle: Text('\$${products[index].price.toString()}'),
+                                trailing: _buildEditButton(context, index)
+                            ),
+                            Divider(
+                                color: Colors.red,
+                                height: 2.0,
+                            ),
+                        ],
+                    ),
+                );
+            },
+            itemCount: products.length,
         );
     }
 }

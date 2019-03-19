@@ -4,9 +4,8 @@ import '../../entity/Product.dart';
 
 class ProductsPage extends StatelessWidget {
     final List<Product> products;
-    final Function deleteProduct;
 
-    ProductsPage(this.products, this.deleteProduct);
+    ProductsPage(this.products);
 
     @override
     Widget build(BuildContext context) {
@@ -43,7 +42,7 @@ class ProductsPage extends StatelessWidget {
                     ),
                 ],
             ),
-            body: Products(products, deleteProduct),
+            body: Products(products),
         );
     }
 }

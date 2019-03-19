@@ -5,13 +5,6 @@ import '../../widgets/helpers/ensure_visible.dart';
 import '../../scoped-models/products.dart';
 
 class ProductEditPage extends StatefulWidget {
-    final Function addProduct;
-    final Function updateProduct;
-    final Product product;
-    final int index;
-
-    ProductEditPage({this.addProduct, this.product, this.updateProduct, this.index});
-
     @override
     State<StatefulWidget> createState() {
         return _ProductEditPageState();
@@ -31,7 +24,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
     final _descriptionFocusNode = FocusNode();
     final _priceFocusNode = FocusNode();
 
-    Widget _buildTitleTextField() {
+    Widget _buildTitleTextField(Product selectedProduct) {
         return EnsureVisibleWhenFocused(
             focusNode: _titleFocusNode,
             child: TextFormField(
@@ -39,7 +32,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 decoration: InputDecoration(
                     labelText: 'Product Title',
                 ),
-                initialValue: widget.product == null ? null : widget.product.title,
+                initialValue: selectedProduct == null ? null : selectedProduct.title,
                 validator: (String value) {
                     if (value.isEmpty) {
                         return 'Title is required';
@@ -52,7 +45,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         );
     }
 
-    Widget _buildDescriptionTextField() {
+    Widget _buildDescriptionTextField(Product selectedProduct) {
         return EnsureVisibleWhenFocused(
             focusNode: _descriptionFocusNode,
             child: TextFormField(
@@ -61,7 +54,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                     labelText: 'Product Description',
                 ),
                 maxLines: 4,
-                initialValue: widget.product == null ? null : widget.product.description,
+                initialValue: selectedProduct == null ? null : selectedProduct.description,
                 validator: (String value) {
                     if (value.isEmpty) {
                         return 'Title is required';
@@ -74,7 +67,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
         );
     }
 
-    Widget _buildPriceTextField() {
+    Widget _buildPriceTextField(Product selectedProduct) {
         return EnsureVisibleWhenFocused(
             focusNode: _priceFocusNode,
             child: TextFormField(
@@ -82,7 +75,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 decoration: InputDecoration(
                     labelText: 'Product Price',
                 ),
-                initialValue: widget.product == null ? null : widget.product.price.toString(),
+                initialValue: selectedProduct == null ? null : selectedProduct.price.toString(),
                 validator: (String value) {
                     if (value.isEmpty) {
                         return 'Title is required';
@@ -96,11 +89,11 @@ class _ProductEditPageState extends State<ProductEditPage> {
         );
     }
 
-    void _submitForm(Function addProduct, Function updateProduct) {
+    void _submitForm(Function addProduct, Function updateProduct, [Product selectedProduct]) {
         if (_formKey.currentState.validate()) {
             _formKey.currentState.save();
-            if (widget.product != null) {
-                updateProduct(widget.index, newProduct);
+            if (selectedProduct != null) {
+                updateProduct(newProduct);
             } else {
                 addProduct(newProduct);
             }
@@ -115,17 +108,14 @@ class _ProductEditPageState extends State<ProductEditPage> {
                     color: Theme.of(context).accentColor,
                     textColor: Colors.white,
                     child: Text('Save'),
-                    onPressed: () => _submitForm(model.addProduct, model.updateProduct),
+                    onPressed: () => _submitForm(model.addProduct, model.updateProduct, model.selectedProduct),
                 );
             }
         );
     }
 
-    @override
-    Widget build(BuildContext context) {
-        final double deviceWidth = MediaQuery.of(context).size.width;
-        final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-        final Widget pageContent = GestureDetector(
+    Widget _buildPageContent(BuildContext context, double targetWidth, Product selectedProduct) {
+        return GestureDetector(
             onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
             },
@@ -136,9 +126,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
                     key: _formKey,
                     child: ListView(
                         children: <Widget>[
-                            _buildTitleTextField(),
-                            _buildDescriptionTextField(),
-                            _buildPriceTextField(),
+                            _buildTitleTextField(selectedProduct),
+                            _buildDescriptionTextField(selectedProduct),
+                            _buildPriceTextField(selectedProduct),
                             SizedBox(
                                 height: 10.0,
                             ),
@@ -148,14 +138,25 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 ),
             ),
         );
+    }
 
-        return widget.product == null ?
-            pageContent :
-            Scaffold(
-                appBar: AppBar(
-                    title: Text('Edit Product'),
-                ),
-                body: pageContent,
-            );
+    @override
+    Widget build(BuildContext context) {
+        final double deviceWidth = MediaQuery.of(context).size.width;
+        final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+
+        return ScopedModelDescendant<ProductsModel>(
+            builder: (BuildContext context, Widget child, ProductsModel model) {
+                final Widget pageContent = _buildPageContent(context, targetWidth, model.selectedProduct);
+                return model.selectedProductIndex == null ?
+                    pageContent :
+                    Scaffold(
+                        appBar: AppBar(
+                            title: Text('Edit Product'),
+                        ),
+                        body: pageContent,
+                    );
+            },
+        );
     }
 }

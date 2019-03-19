@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import '../product/product_edit.dart';
 import '../product/product_list.dart';
-import '../../entity/Product.dart';
 
 class ProductsAdminPage extends StatelessWidget {
     @override
@@ -44,7 +43,7 @@ class ProductsAdminPage extends StatelessWidget {
                 body: TabBarView(
                     children: <Widget>[
                         ProductEditPage(),
-                        ProductListPage(null, null, null),
+                        ProductListPage(),
                     ],
                 ),
             ),

@@ -5,7 +5,6 @@ import './pages/auth/auth.dart';
 import './pages/product/products_admin.dart';
 import './pages/product/products_page.dart';
 import './pages/product/product_page.dart';
-import './entity/Product.dart';
 
 void main() => runApp(MyApp());
 
@@ -41,7 +40,7 @@ class _MyAppState extends State<MyApp> {
                     if (pathElements[1] == 'product') {
                         final int index = int.parse(pathElements[2]);
                         return MaterialPageRoute<bool>(
-                            builder: (BuildContext context) => ProductPage(null),
+                            builder: (BuildContext context) => ProductPage(index),
                         );
                     }
                 },

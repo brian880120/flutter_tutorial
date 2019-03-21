@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import '../../widgets/products/products.dart';
+import 'package:scoped_model/scoped_model.dart';
+import '../../scoped-models/products.dart';
 
 class ProductsPage extends StatelessWidget {
     @override
@@ -31,9 +33,15 @@ class ProductsPage extends StatelessWidget {
             appBar: AppBar(
                 title: Text('Home Page'),
                 actions: <Widget>[
-                    IconButton(
-                        icon: Icon(Icons.favorite),
-                        onPressed: () {},
+                    ScopedModelDescendant(
+                        builder: (BuildContext context, Widget child, ProductsModel model) {
+                            return IconButton(
+                                icon: Icon(model.displayFavoritesOnly ? Icons.favorite : Icons.favorite_border),
+                                onPressed: () {
+                                    model.toggleDisplayMode();
+                                },
+                            );
+                        }
                     ),
                 ],
             ),

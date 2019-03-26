@@ -12,12 +12,19 @@ class ProductEditPage extends StatefulWidget {
 }
 
 class _ProductEditPageState extends State<ProductEditPage> {
-    Product newProduct = new Product(
-        title: '',
-        description: '',
-        price: null,
-        image: 'assets/demo.jpg',
-    );
+    final Map<String, dynamic> _formData = {
+        'title': null,
+        'description': null,
+        'price': null,
+        'image': 'assets/demo.jpg',
+    };
+
+    // Product newProduct = new Product(
+    //     title: '',
+    //     description: '',
+    //     price: null,
+    //     image: 'assets/demo.jpg',
+    // );
 
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
     final _titleFocusNode = FocusNode();
@@ -34,12 +41,12 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 ),
                 initialValue: selectedProduct == null ? null : selectedProduct.title,
                 validator: (String value) {
-                    if (value.isEmpty) {
-                        return 'Title is required';
+                    if (value.isEmpty || value.length < 5) {
+                        return 'Title is required and should be 5+ characters long.';
                     }
                 },
                 onSaved: (String value) {
-                    newProduct.title = value;
+                    _formData['title'] = value;
                 },
             ),
         );
@@ -61,7 +68,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                     }
                 },
                 onSaved: (String value) {
-                    newProduct.description = value;
+                    _formData['description'] = value;
                 },
             ),
         );
@@ -77,28 +84,42 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 ),
                 initialValue: selectedProduct == null ? null : selectedProduct.price.toString(),
                 validator: (String value) {
-                    if (value.isEmpty) {
-                        return 'Title is required';
+                    if (value.isEmpty || !RegExp(r'^(?:[1-9]\d*|0)?(?:\.\d+)?$').hasMatch(value)) {
+                        return 'Price is required and should be a number.';
                     }
                 },
                 keyboardType: TextInputType.number,
                 onSaved: (String value) {
-                    newProduct.price = double.parse(value);
+                    _formData['price'] = double.parse(value);
                 },
             ),
         );
     }
 
-    void _submitForm(Function addProduct, Function updateProduct, [Product selectedProduct]) {
-        if (_formKey.currentState.validate()) {
-            _formKey.currentState.save();
-            if (selectedProduct != null) {
-                updateProduct(newProduct);
-            } else {
-                addProduct(newProduct);
-            }
-            Navigator.pushReplacementNamed(context, '/products');
+    void _submitForm(Function addProduct, Function updateProduct, [int selectedProductIndex]) {
+        if (!_formKey.currentState.validate()) {
+            return;
         }
+
+        _formKey.currentState.save();
+
+        if (selectedProductIndex == null) {
+            addProduct(Product(
+                    title: _formData['title'],
+                    description: _formData['description'],
+                    price: _formData['price'],
+                    image: _formData['image']),
+            );
+        } else {
+            updateProduct(Product(
+                    title: _formData['title'],
+                    description: _formData['description'],
+                    price: _formData['price'],
+                    image: _formData['image']),
+            );
+        }
+
+        Navigator.pushReplacementNamed(context, '/products');
     }
 
     Widget _buildSubmitButton() {
@@ -108,13 +129,16 @@ class _ProductEditPageState extends State<ProductEditPage> {
                     color: Theme.of(context).accentColor,
                     textColor: Colors.white,
                     child: Text('Save'),
-                    onPressed: () => _submitForm(model.addProduct, model.updateProduct, model.selectedProduct),
+                    onPressed: () => _submitForm(model.addProduct, model.updateProduct, model.selectedProductIndex),
                 );
             }
         );
     }
 
-    Widget _buildPageContent(BuildContext context, double targetWidth, Product selectedProduct) {
+    Widget _buildPageContent(BuildContext context, Product selectedProduct) {
+        final double deviceWidth = MediaQuery.of(context).size.width;
+        final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
+        final double targetPadding = deviceWidth - targetWidth;
         return GestureDetector(
             onTap: () {
                 FocusScope.of(context).requestFocus(FocusNode());
@@ -125,6 +149,7 @@ class _ProductEditPageState extends State<ProductEditPage> {
                 child: Form(
                     key: _formKey,
                     child: ListView(
+                        padding: EdgeInsets.symmetric(horizontal: targetPadding / 2),
                         children: <Widget>[
                             _buildTitleTextField(selectedProduct),
                             _buildDescriptionTextField(selectedProduct),
@@ -142,12 +167,9 @@ class _ProductEditPageState extends State<ProductEditPage> {
 
     @override
     Widget build(BuildContext context) {
-        final double deviceWidth = MediaQuery.of(context).size.width;
-        final double targetWidth = deviceWidth > 550.0 ? 500.0 : deviceWidth * 0.95;
-
         return ScopedModelDescendant<ProductsModel>(
             builder: (BuildContext context, Widget child, ProductsModel model) {
-                final Widget pageContent = _buildPageContent(context, targetWidth, model.selectedProduct);
+                final Widget pageContent = _buildPageContent(context, model.selectedProduct);
                 return model.selectedProductIndex == null ?
                     pageContent :
                     Scaffold(

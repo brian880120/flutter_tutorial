@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../entity/UserCred.dart';
-import './auth_input.dart';
 
 class AuthPage extends StatefulWidget {
     @override
@@ -10,7 +8,12 @@ class AuthPage extends StatefulWidget {
 }
 
 class _AuthPageState extends State<AuthPage> {
-    final UserCred userCred = new UserCred('', '', false);
+    final Map<String, dynamic> _formData = {
+        'email': null,
+        'password': null,
+        'acceptTerms': false,
+    };
+
     final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
 
     _buildBackgroundImage() {
@@ -22,51 +25,61 @@ class _AuthPageState extends State<AuthPage> {
     }
 
     Widget _buildEmailTextField() {
-        return AuthInput(
-            inputValue: userCred.email,
-            label: 'E-Mail',
-            inputType: TextInputType.emailAddress,
+        return TextFormField(
+            decoration: InputDecoration(
+                labelText: 'E-Mail',
+                filled: true,
+                fillColor: Colors.white,
+            ),
+            keyboardType: TextInputType.emailAddress,
             validator: (String value) {
-                if (value.isEmpty) {
-                    return 'Field is Required';
+                if (value.isEmpty || !RegExp(r"[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?").hasMatch(value)) {
+                    return 'Please enter a valid email';
                 }
             },
-            onInputChanged: (String value) {
-                userCred.email = value;
-            },  
+            onSaved: (String value) {
+                _formData['email'] = value;
+            },
         );
     }
 
     Widget _buildPasswordTextField() {
-        return AuthInput(
-            inputValue: userCred.password,
-            label: 'Password',
-            isObscureText: true,
+        return TextFormField(
+            decoration: InputDecoration(
+                labelText: 'Password',
+                filled: true,
+                fillColor: Colors.white,
+            ),
+            obscureText: true,
             validator: (String value) {
-                if (value.isEmpty) {
-                    return 'Field is Required';
+                if (value.isEmpty || value.length < 6) {
+                    return 'password invalid';
                 }
             },
-            onInputChanged: (String value) {
-                userCred.password = value;
+            onSaved: (String value) {
+                _formData['password'] = value;
             },
         );
     }
 
     Widget _buildAcceptSwitch() {
         return SwitchListTile(
-            value: userCred.acceptTerms,
+            value: _formData['acceptTerms'],
             title: Text('Accept Terms'),
             onChanged: (bool value) {
-                userCred.acceptTerms = value;
+                setState(() {
+                    _formData['acceptTerms'] = value;
+                });
             },
         );
     }
 
     void _onSubmit() {
-        if (_formKey.currentState.validate() && userCred.acceptTerms) {
-            Navigator.pushReplacementNamed(context, '/products');
+        if (!_formKey.currentState.validate() || !_formData['acceptTerms']) {
+            return;
         }
+        _formKey.currentState.save();
+        Navigator.pushReplacementNamed(context, '/products');
     }
 
     @override
